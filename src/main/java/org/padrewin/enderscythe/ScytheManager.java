@@ -10,12 +10,14 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -164,6 +166,13 @@ public class ScytheManager implements Listener {
 
             List<String> updatedLore = generateScytheLore(level);
             meta.setLore(updatedLore);
+
+            // Adaugă enchant Unbreaking 1 pentru glint
+            meta.addEnchant(Enchantment.DURABILITY, 1, true);
+
+            // Ascunde enchanturile și atributele
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
             meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, level);
             meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
