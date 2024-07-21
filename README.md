@@ -87,9 +87,15 @@ messages:
 ```
 
 ## Commands
-- **/enderscythe reload:** Reload the plugin configuration.
+- **/enderscythe reload:** Reload the plugin configuration. 
 - **/enderscythe give <name>:** Give a player an Ender Scythe.
 - **/getupgradeitem:** Command to receive the upgrade item.
+### You can also use predefined aliases
+- **/es give <name>:** Give a player an Ender Scythe.
+- **/es reload:** Reload the plugin configuration.
+- **/esgui:** Command to receive the upgrade item.
+- **/getui:** Command to receive the upgrade item.
+
 
 ## Permissions
 - **enderscythe.admin:** Gives you total power.
