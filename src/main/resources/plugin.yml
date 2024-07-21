@@ -8,6 +8,8 @@ commands:
   enderscythe:
     description: Give a player the EnderScythe or reload the plugin.
     permission: enderscythe.admin
+    aliases: [es]
   getupgradeitem:
     description: Give a player the EnderScythe or reload the plugin.
     permission: enderscythe.admin
+    aliases: [esgui, getui]
