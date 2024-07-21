@@ -70,16 +70,20 @@ ender-scythe:
   laser-color: "#800080" # Laser hex color (#800080) this is default PURPLE
 ```
 
-### config.yml
+### messages.yml
 
 ```yaml
 messages:
-  receive-hoe: "You have received an Ender Scythe!"
-  receive-upgrade-item: "You have received an upgrade item!"
-  upgrade-success: "Your Ender Scythe has been upgraded to level {level}."
-  max-level-reached: "&fThis &6Ender Scythe&f is at &dmax level&f."
-  not-ender-scythe: "&cThis is not an Ender Scythe."
-  denied-inventory: "You cannot use an Ender Scythe in this inventory!"
+  receive-hoe: "§7You have received an §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce§7!"
+  config-reloaded: "§7Config reloaded."
+  give-success: "§7Successfully given an §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce §7to {player}."
+  player-not-found: "§7Player not found."
+  invalid-command: "&cInvalid command."
+  upgrade-success: "§7Ender Scythe upgraded to level {level}."
+  not-allowed-world: "§7You cannot use the Ender Scythe in this world."
+  not-ender-scythe: "§7This is not an §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce§7."
+  receive-upgrade-item: "§7You have received an upgrade item!"
+  max-level-reached: "§7This §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce §fis at §dlevel max§7."
 ```
 
 ## Commands
