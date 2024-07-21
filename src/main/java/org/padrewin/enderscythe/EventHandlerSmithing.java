@@ -1,14 +1,13 @@
 package org.padrewin.enderscythe;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.inventory.PrepareSmithingEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.inventory.PrepareGrindstoneEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -18,17 +17,17 @@ public class EventHandlerSmithing implements Listener {
 
     private final JavaPlugin plugin;
     private final NamespacedKey enderScytheKey;
-    private final MessageManager messageManager;
 
-    public EventHandlerSmithing(JavaPlugin plugin, MessageManager messageManager) {
+    public EventHandlerSmithing(JavaPlugin plugin) {
         this.plugin = plugin;
         this.enderScytheKey = new NamespacedKey(plugin, "isEnderScythe");
-        this.messageManager = messageManager;
     }
 
     private boolean isEnderScythe(ItemStack item) {
+        if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
-        return meta != null && meta.getPersistentDataContainer().has(enderScytheKey, PersistentDataType.STRING);
+        return (item.getType() == Material.DIAMOND_HOE || item.getType() == Material.NETHERITE_HOE) &&
+                meta != null && meta.getPersistentDataContainer().has(enderScytheKey, PersistentDataType.STRING);
     }
 
     @EventHandler
@@ -36,27 +35,29 @@ public class EventHandlerSmithing implements Listener {
         ItemStack baseItem = event.getInventory().getItem(0);
         ItemStack upgradeItem = event.getInventory().getItem(1);
 
-        if (baseItem != null && upgradeItem != null && isEnderScythe(baseItem)) {
-            event.setResult(null); // Anulăm rezultatul pentru a preveni conversia în hoe de netherite
+        if (baseItem != null && upgradeItem != null && isEnderScythe(baseItem) && upgradeItem.getType() == Material.NETHERITE_INGOT) {
+            ItemStack resultItem = new ItemStack(Material.NETHERITE_HOE);
+            ItemMeta meta = resultItem.getItemMeta();
+            if (meta != null) {
+                ItemMeta baseMeta = baseItem.getItemMeta();
+                if (baseMeta != null) {
+                    meta.setDisplayName(baseMeta.getDisplayName());
+                    meta.setLore(baseMeta.getLore());
+                    // Copy persistent data from the original scythe
+                    meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, baseMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER));
+                    meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
+                    resultItem.setItemMeta(meta);
+                    event.setResult(resultItem); // Setăm rezultatul conversiei
+                }
+            }
         }
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
-        ItemStack currentItem = event.getCurrentItem();
-        ItemStack cursorItem = event.getCursor();
-
-        if (inventory.getType().toString().equals("SMITHING") || inventory.getType().toString().equals("ANVIL") || inventory.getType().toString().equals("GRINDSTONE")) {
-            if (currentItem != null && isEnderScythe(currentItem)) {
-                event.setCancelled(true); // Anulăm evenimentul pentru a preveni utilizarea în Smithing Table
-                event.getWhoClicked().sendMessage(messageManager.getPrefixedMessage("denied-inventory"));
-            }
-
-            if (cursorItem != null && isEnderScythe(cursorItem)) {
-                event.setCancelled(true); // Anulăm evenimentul pentru a preveni utilizarea în Smithing Table
-                event.getWhoClicked().sendMessage(messageManager.getPrefixedMessage("denied-inventory"));
-            }
+    public void onPrepareItemEnchant(PrepareItemEnchantEvent event) {
+        ItemStack item = event.getItem();
+        if (isEnderScythe(item)) {
+            event.setCancelled(true); // Anulăm evenimentul de enchant fără să trimitem vreun mesaj
         }
     }
 
@@ -71,22 +72,14 @@ public class EventHandlerSmithing implements Listener {
     }
 
     @EventHandler
-    public void onPrepareGrindstone(PrepareGrindstoneEvent event) {
-        ItemStack firstItem = event.getInventory().getItem(0);
-        ItemStack secondItem = event.getInventory().getItem(1);
+    public void onPrepareItemCraft(PrepareItemCraftEvent event) {
+        ItemStack[] items = event.getInventory().getMatrix();
 
-        if ((firstItem != null && isEnderScythe(firstItem)) || (secondItem != null && isEnderScythe(secondItem))) {
-            event.setResult(null); // Anulăm rezultatul pentru a preveni ștergerea enchantmenturilor
-        }
-    }
-
-    @EventHandler
-    public void onEnchantItem(EnchantItemEvent event) {
-        ItemStack item = event.getItem();
-
-        if (item != null && isEnderScythe(item)) {
-            event.setCancelled(true); // Anulăm evenimentul de enchant
-            event.getEnchanter().sendMessage(messageManager.getPrefixedMessage("denied-inventory"));
+        for (ItemStack item : items) {
+            if (isEnderScythe(item)) {
+                event.getInventory().setResult(new ItemStack(Material.AIR)); // Anulăm rezultatul pentru a preveni combinarea itemelor în Crafting Table
+                break;
+            }
         }
     }
 }

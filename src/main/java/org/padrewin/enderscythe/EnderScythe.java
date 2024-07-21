@@ -41,7 +41,7 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
         upgradeItemHandler.register();
 
         scytheManager.startParticleTask();  // Mutați apelul metodei aici
-        Bukkit.getPluginManager().registerEvents(new EventHandlerSmithing(this, messageManager), this);
+        Bukkit.getPluginManager().registerEvents(new EventHandlerSmithing(this), this);
 
         getLogger().info("EnderScythe has been enabled!");
     }

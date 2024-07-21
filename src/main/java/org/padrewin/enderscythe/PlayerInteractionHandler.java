@@ -31,7 +31,7 @@ public class PlayerInteractionHandler implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (item != null && item.getType() == Material.DIAMOND_HOE) {
+        if ((item != null && item.getType() == Material.DIAMOND_HOE) || (item != null && item.getType() == Material.NETHERITE_HOE)) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && scytheManager.isEnderScythe(item)) {
                 // Verifică dacă jucătorul se află într-un world permis
@@ -54,7 +54,7 @@ public class PlayerInteractionHandler implements Listener {
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItem(event.getNewSlot());
-        if (item != null && item.getType() == Material.DIAMOND_HOE && scytheManager.isEnderScythe(item)) {
+        if ((item != null && item.getType() == Material.DIAMOND_HOE && scytheManager.isEnderScythe(item)) || (item != null && item.getType() == Material.NETHERITE_HOE && scytheManager.isEnderScythe(item))) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 int level = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);

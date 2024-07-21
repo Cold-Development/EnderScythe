@@ -94,6 +94,13 @@ public class ScytheManager implements Listener {
     }
 
     public boolean isEnderScythe(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+        Material itemType = item.getType();
+        if (itemType != Material.DIAMOND_HOE && itemType != Material.NETHERITE_HOE) {
+            return false;
+        }
         ItemMeta meta = item.getItemMeta();
         return meta != null && meta.getPersistentDataContainer().has(enderScytheKey, PersistentDataType.STRING);
     }
@@ -209,7 +216,7 @@ public class ScytheManager implements Listener {
 
     public void upgradeScythe(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() == Material.DIAMOND_HOE && isEnderScythe(item)) {
+        if (item != null && isEnderScythe(item)) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 int currentLevel = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
@@ -237,7 +244,7 @@ public class ScytheManager implements Listener {
             if (cooldowns.containsKey(playerId)) {
                 long timeLeft = (cooldowns.get(playerId) + getEnderScytheCooldown()) - System.currentTimeMillis();
                 if (timeLeft > 0) {
-                    return;
+                    return; // În cooldown, nu face nimic
                 }
             }
 
@@ -247,7 +254,7 @@ public class ScytheManager implements Listener {
             double damage = getEnderScytheDamage() * Math.pow(2, scytheLevel - 1);
 
             Vector direction = player.getLocation().getDirection();
-            Vector offset = direction.clone().normalize().multiply(0.5);
+            Vector offset = direction.clone().normalize().multiply(0.5); // Offset pentru a poziționa laserul puțin mai jos
             offset.setY(-0.5);
 
             Color laserColor = getLaserColor();
@@ -284,7 +291,7 @@ public class ScytheManager implements Listener {
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItem(event.getNewSlot());
-        if (item != null && item.getType() == Material.DIAMOND_HOE && isEnderScythe(item)) {
+        if (item != null && isEnderScythe(item)) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 int level = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);

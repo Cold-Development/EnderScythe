@@ -53,7 +53,7 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
                 // Verificăm dacă currentItem este Ender Scythe
                 if (isEnderScythe(currentItem)) {
                     ItemMeta currentMeta = currentItem.getItemMeta();
-                    if (currentMeta != null && currentItem.getType() == Material.DIAMOND_HOE) {
+                    if ((currentMeta != null && currentItem.getType() == Material.DIAMOND_HOE) || (currentMeta != null && currentItem.getType() == Material.NETHERITE_HOE)) {
                         int currentLevel = currentMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
                         int maxLevel = 2; // Definește nivelul maxim
 
@@ -99,27 +99,6 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
             }
         }
         return false;
-    }
-
-    public ItemStack createEnderScythe(int level) {
-        ItemStack hoe = new ItemStack(Material.DIAMOND_HOE);
-        ItemMeta meta = hoe.getItemMeta();
-        if (meta != null) {
-            ScytheManager scytheManager = new ScytheManager(plugin, new ConfigManager(plugin)); // Inițializarea ScytheManager
-            String baseName = scytheManager.generateScytheName();
-            String levelTemplate = scytheManager.generateScytheLevel(level);
-            String displayName = baseName + " " + levelTemplate;
-            meta.setDisplayName(displayName);
-
-            List<String> updatedLore = scytheManager.generateScytheLore(level);
-            meta.setLore(updatedLore);
-
-            NamespacedKey enderScytheKey = new NamespacedKey(plugin, "isEnderScythe"); // Definirea enderScytheKey
-            meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, level);
-            meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
-            hoe.setItemMeta(meta);
-        }
-        return hoe;
     }
 
     private ItemStack createUpgradeItem() {
