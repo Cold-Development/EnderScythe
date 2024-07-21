@@ -104,5 +104,4 @@ messages:
 ![alt text](image.png)
 ![alt text](image-1.png)
 ![alt text](image-2.png)
-https://imgur.com/jDWB3ql.gif
-https://imgur.com/L1K91Wr.gif
+![esitems](https://github.com/user-attachments/assets/0efcac6c-0d21-4a20-b708-19ed7e0bc441)
