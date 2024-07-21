@@ -104,5 +104,5 @@ messages:
 ![alt text](image.png)
 ![alt text](image-1.png)
 ![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
+![EnderScythe2](https://imgur.com/jDWB3ql.gif)
+![EnderScythe](https://imgur.com/L1K91Wr.gif)
