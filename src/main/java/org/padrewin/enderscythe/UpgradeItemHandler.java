@@ -43,19 +43,16 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
             ItemStack currentItem = event.getCurrentItem();
             ItemStack cursorItem = event.getCursor();
 
-            // Verificăm dacă cursorItem este Scythe Shard
             if (cursorItem != null && cursorItem.getType() == Material.AMETHYST_SHARD && isUpgradeItem(cursorItem)) {
-                // Dacă currentItem este null, înseamnă că încercăm să punem shardul într-un slot gol
                 if (currentItem == null || currentItem.getType() == Material.AIR) {
-                    return; // Permitem acțiunea fără a afișa vreun mesaj
+                    return;
                 }
 
-                // Verificăm dacă currentItem este Ender Scythe
                 if (isEnderScythe(currentItem)) {
                     ItemMeta currentMeta = currentItem.getItemMeta();
                     if ((currentMeta != null && currentItem.getType() == Material.DIAMOND_HOE) || (currentMeta != null && currentItem.getType() == Material.NETHERITE_HOE)) {
                         int currentLevel = currentMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
-                        int maxLevel = 2; // Definește nivelul maxim
+                        int maxLevel = 2;
 
                         if (currentLevel >= maxLevel) {
                             player.sendMessage(messageManager.getPrefixedMessage("max-level-reached"));
@@ -64,10 +61,10 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
                         }
 
                         int newLevel = currentLevel + 1;
-                        currentMeta = scytheManager.updateScytheLore(currentMeta, newLevel); // Actualizează lore-ul și numele
+                        currentMeta = scytheManager.updateScytheLore(currentMeta, newLevel);
                         currentItem.setItemMeta(currentMeta);
                         event.setCancelled(true);
-                        cursorItem.setAmount(cursorItem.getAmount() - 1); // Consuma unul dintre itemele de upgrade
+                        cursorItem.setAmount(cursorItem.getAmount() - 1);
                     }
                 } else {
                     player.sendMessage(messageManager.getPrefixedMessage("not-ender-scythe"));

@@ -33,7 +33,6 @@ public class ScytheManager implements Listener {
     private final Set<UUID> playersWithScythe = new HashSet<>();
     private final NamespacedKey enderScytheKey;
 
-    // Variabile pentru valorile de configurare
     private double enderScytheDamage;
     private long enderScytheCooldown;
     private int enderScytheRange;
@@ -48,11 +47,9 @@ public class ScytheManager implements Listener {
         this.enderScytheKey = new NamespacedKey(plugin, "isEnderScythe");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
-        // Inițializare valori de configurare
         reloadConfigValues();
 
-        // Task repetitiv pentru a adăuga particule
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::spawnParticles, 0L, 10L); // rulează la fiecare 10 ticks
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this::spawnParticles, 0L, 10L);
     }
 
     public void reloadConfigValues() {
@@ -60,13 +57,13 @@ public class ScytheManager implements Listener {
         this.enderScytheCooldown = configManager.getConfig().getLong("enderscythe-cooldown", 500);
         this.enderScytheRange = configManager.getConfig().getInt("enderscythe-range", 30);
         this.damagePlayers = configManager.getConfig().getBoolean("damage-players", true);
-        this.laserColor = configManager.getConfig().getString("ender-scythe.laser-color", "#800080"); // Implicit PURPLE
+        this.laserColor = configManager.getConfig().getString("ender-scythe.laser-color", "#800080");
         this.level1ParticlesEnabled = configManager.getConfig().getBoolean("ender-scythe-level1-particles", true);
         this.level2ParticlesEnabled = configManager.getConfig().getBoolean("ender-scythe-level2-particles", true);
     }
 
     public void startParticleTask() {
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::spawnParticles, 0L, 10L); // Rulează la fiecare 10 ticks
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this::spawnParticles, 0L, 10L);
     }
 
     private void spawnParticles() {
@@ -167,10 +164,8 @@ public class ScytheManager implements Listener {
             List<String> updatedLore = generateScytheLore(level);
             meta.setLore(updatedLore);
 
-            // Adaugă enchant Unbreaking 1 pentru glint
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
 
-            // Ascunde enchanturile și atributele
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
@@ -201,13 +196,9 @@ public class ScytheManager implements Listener {
 
     public ItemMeta updateScytheLore(ItemMeta meta, int newLevel) {
         if (meta != null) {
-            // Actualizează persistent data container pentru noul nivel
             meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, newLevel);
             meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
-
-            // Actualizează doar nivelul în nume și valorile din lore
             meta = updateScytheLevelInName(meta, newLevel);
-
             List<String> updatedLore = generateScytheLore(newLevel);
             meta.setLore(updatedLore);
         }
@@ -229,7 +220,7 @@ public class ScytheManager implements Listener {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 int currentLevel = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
-                int maxLevel = 2; // Definește nivelul maxim
+                int maxLevel = 2;
 
                 if (currentLevel >= maxLevel) {
                     player.sendMessage(configManager.getMessagesConfig().getString("messages.max-level-reached"));
@@ -237,7 +228,7 @@ public class ScytheManager implements Listener {
                 }
 
                 int newLevel = currentLevel + 1;
-                meta = updateScytheLore(meta, newLevel);  // Actualizăm doar lore-ul și numele cu nivelul corect
+                meta = updateScytheLore(meta, newLevel);
                 item.setItemMeta(meta);
                 player.sendMessage(configManager.getMessagesConfig().getString("upgrade-success").replace("{level}", String.valueOf(newLevel)));
             }
@@ -253,7 +244,7 @@ public class ScytheManager implements Listener {
             if (cooldowns.containsKey(playerId)) {
                 long timeLeft = (cooldowns.get(playerId) + getEnderScytheCooldown()) - System.currentTimeMillis();
                 if (timeLeft > 0) {
-                    return; // În cooldown, nu face nimic
+                    return;
                 }
             }
 
@@ -263,7 +254,7 @@ public class ScytheManager implements Listener {
             double damage = getEnderScytheDamage() * Math.pow(2, scytheLevel - 1);
 
             Vector direction = player.getLocation().getDirection();
-            Vector offset = direction.clone().normalize().multiply(0.5); // Offset pentru a poziționa laserul puțin mai jos
+            Vector offset = direction.clone().normalize().multiply(0.5);
             offset.setY(-0.5);
 
             Color laserColor = getLaserColor();
@@ -277,7 +268,6 @@ public class ScytheManager implements Listener {
                 }
                 player.getWorld().spawnParticle(Particle.REDSTONE, point.toLocation(player.getWorld()), 10, 0, 0, 0, 0, dustOptions);
 
-                // Verifică dacă laserul lovește o entitate
                 for (Entity entity : player.getWorld().getNearbyEntities(point.toLocation(player.getWorld()), 0.5, 0.5, 0.5)) {
                     if (entity instanceof LivingEntity) {
                         if (entity != player) {
@@ -335,7 +325,7 @@ public class ScytheManager implements Listener {
                 for (int j = 2; j <= 7; j++) {
                     sb.append('§').append(chars[i + j]);
                 }
-                i += 7; // Skip the next 7 characters as they are part of the hex color code
+                i += 7;
             } else {
                 sb.append(chars[i]);
             }

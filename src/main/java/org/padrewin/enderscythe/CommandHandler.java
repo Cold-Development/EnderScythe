@@ -31,13 +31,13 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 configManager.reloadConfig();
                 messageManager.reloadMessagesConfig();
-                scytheManager.reloadConfigValues(); // Adaugă acest apel pentru a reîncărca valorile din config
+                scytheManager.reloadConfigValues();
                 sender.sendMessage(messageManager.getPrefixedMessage("config-reloaded"));
                 return true;
             } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
                 Player target = Bukkit.getPlayer(args[1]);
                 if (target != null) {
-                    scytheManager.giveEnderScythe(target, 1); // Nivelul implicit este acum 1
+                    scytheManager.giveEnderScythe(target, 1);
                     sender.sendMessage(messageManager.getPrefixedMessage("give-success").replace("{player}", target.getName()));
                     return true;
                 } else {
@@ -61,7 +61,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             if (args.length == 1) {
                 return Arrays.asList("give", "reload", "upgrade");
             } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
-                return null; // Return player names
+                return null;
             }
         }
         return Collections.emptyList();

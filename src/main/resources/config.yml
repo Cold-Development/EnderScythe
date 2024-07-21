@@ -1,3 +1,12 @@
+#########################################################################################################
+#    Keep in mind that this plugin does not fully support HEX color codes. (#FF0000)                    #
+#    You can use https://www.birdflop.com/resources/rgb/ to create your colors                          #
+#    You can use old format [§x§r§r§g§g§b§b] or simply follow the pattern that's already used           #
+#    Developer; padrewin                                                                                #
+#    GitHub; https://github.com/padrewin                                                                #
+#    Links: https://linktr.ee/padrewin || https://discord.mc-1st.ro                                     #
+#########################################################################################################
+
 # Plugin Prefix:
 plugin-prefix: "&8「§x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce」&7» "
 
@@ -18,16 +27,17 @@ ender-scythe-level1-particles: true
 ender-scythe-level2-particles: true
 
 # Set world where EnderScythe can be used:
+# if you don't put your world here, scythe won't work
 enderscythe-use-worlds:
   - overworld
-  - the_end
-  - lobby
-  - lobby_the_end
+  - enter
+  - your
+  - world names
 
 # EnderScythe display settings:
 ender-scythe:
   name: "§x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce"
-  level: "§8「%scythe_level%§8」"
+  level: "§8「%scythe_level%§8」" # Don't ever change this placeholder except its color. Colors are safe to be edited. Same applies for below lore section
   lore:
     - "§4🗡 §7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ᴄᴀɴ ᴅᴇᴀʟ %enderscythe_damage% ᴅᴀᴍᴀɢᴇ"
     - "§c📏 §7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ʀᴀɴɢᴇ ᴏꜰ %enderscythe_range% ʙʟᴏᴄᴋꜱ"
@@ -36,4 +46,4 @@ ender-scythe:
     - "%enderscythe_damage%"
     - "%enderscythe_range%"
     - "%enderscythe_cooldown%"
-  laser-color: "#800080" # Laser hex color (#800080)
+  laser-color: "#800080" # Laser hex color (#800080) this is default PURPLE

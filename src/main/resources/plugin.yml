@@ -7,13 +7,7 @@ author: 'padrewin'
 commands:
   enderscythe:
     description: Give a player the EnderScythe or reload the plugin.
-    permission: enderscythe.give
-    permission-message: You do not have permission to use this command.
+    permission: enderscythe.admin
   getupgradeitem:
     description: Give a player the EnderScythe or reload the plugin.
-    permission: enderscythe.give
-    permission-message: You do not have permission to use this command.
-permissions:
-  enderscythe.give:
-    description: Allows the player to give the Enderman Hoe.
-    default: op
+    permission: enderscythe.admin

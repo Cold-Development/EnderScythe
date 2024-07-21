@@ -43,7 +43,7 @@ public class EventHandlerSmithing implements Listener {
                 if (baseMeta != null) {
                     meta.setDisplayName(baseMeta.getDisplayName());
                     meta.setLore(baseMeta.getLore());
-                    // Copy persistent data from the original scythe
+
                     meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, baseMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER));
                     meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
                     resultItem.setItemMeta(meta);
@@ -57,7 +57,7 @@ public class EventHandlerSmithing implements Listener {
     public void onPrepareItemEnchant(PrepareItemEnchantEvent event) {
         ItemStack item = event.getItem();
         if (isEnderScythe(item)) {
-            event.setCancelled(true); // Anulăm evenimentul de enchant fără să trimitem vreun mesaj
+            event.setCancelled(true);
         }
     }
 
@@ -67,7 +67,7 @@ public class EventHandlerSmithing implements Listener {
         ItemStack secondItem = event.getInventory().getItem(1);
 
         if ((firstItem != null && isEnderScythe(firstItem)) || (secondItem != null && isEnderScythe(secondItem))) {
-            event.setResult(null); // Anulăm rezultatul pentru a preveni combinarea itemelor
+            event.setResult(null);
         }
     }
 
@@ -77,7 +77,7 @@ public class EventHandlerSmithing implements Listener {
 
         for (ItemStack item : items) {
             if (isEnderScythe(item)) {
-                event.getInventory().setResult(new ItemStack(Material.AIR)); // Anulăm rezultatul pentru a preveni combinarea itemelor în Crafting Table
+                event.getInventory().setResult(new ItemStack(Material.AIR));
                 break;
             }
         }

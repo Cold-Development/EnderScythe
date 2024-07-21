@@ -34,16 +34,15 @@ public class PlayerInteractionHandler implements Listener {
         if ((item != null && item.getType() == Material.DIAMOND_HOE) || (item != null && item.getType() == Material.NETHERITE_HOE)) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && scytheManager.isEnderScythe(item)) {
-                // Verifică dacă jucătorul se află într-un world permis
+
                 if (!configManager.getConfig().getStringList("enderscythe-use-worlds").contains(player.getWorld().getName())) {
                     player.sendMessage(messageManager.getPrefixedMessage("not-allowed-world"));
                     return;
                 }
 
-                // Anulează evenimentul pentru a preveni transformarea blocurilor în farmland
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
                     event.setCancelled(true);
-                    // Logica de utilizare a scythe-ului
+
                     scytheManager.useScythe(player, item);
                 }
             }

@@ -36,7 +36,7 @@ public class MessageManager {
                 for (int j = 2; j <= 7; j++) {
                     sb.append('§').append(chars[i + j]);
                 }
-                i += 7; // Skip the next 7 characters as they are part of the hex color code
+                i += 7;
             } else {
                 sb.append(chars[i]);
             }
