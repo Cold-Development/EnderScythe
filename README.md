@@ -100,3 +100,5 @@ messages:
 3. Restart your server to load the plugin.
 4. Customize the plugin settings in config.yml and messages.yml as needed. || p.s; use /enderscythe reload :P
 5. Use the provided commands to receive and upgrade the Ender Scythe.
+
+![alt text](image.png)
