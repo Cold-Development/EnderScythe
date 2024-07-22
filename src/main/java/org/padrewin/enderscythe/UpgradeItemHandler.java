@@ -27,7 +27,7 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
     public UpgradeItemHandler(JavaPlugin plugin, MessageManager messageManager, ScytheManager scytheManager) {
         this.plugin = plugin;
         this.upgradeKey = new NamespacedKey(plugin, "scytheUpgradeItem");
-        this.scytheManager = scytheManager; // Asigură-te că utilizezi instanța corectă
+        this.scytheManager = scytheManager;
         this.messageManager = messageManager;
     }
 
@@ -52,7 +52,7 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
                     ItemMeta currentMeta = currentItem.getItemMeta();
                     if ((currentMeta != null && currentItem.getType() == Material.DIAMOND_HOE) || (currentMeta != null && currentItem.getType() == Material.NETHERITE_HOE)) {
                         int currentLevel = currentMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
-                        int maxLevel = scytheManager.getMaxScytheLevel(); // Folosește metoda getMaxScytheLevel
+                        int maxLevel = scytheManager.getMaxScytheLevel();
 
                         if (currentLevel >= maxLevel) {
                             player.sendMessage(messageManager.getPrefixedMessage("max-level-reached"));

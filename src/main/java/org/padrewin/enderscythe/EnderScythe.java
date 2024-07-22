@@ -25,7 +25,7 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
 
     @Override
     public void onEnable() {
-        // Salvează fișierul de configurare implicit dacă nu există
+
         saveDefaultConfig();
 
         configManager = new ConfigManager(this);
@@ -57,7 +57,7 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
             public void run() {
                 scytheManager.spawnParticles();
             }
-        }.runTaskTimer(this, 0L, 10L); // Rulează la fiecare 0.5 secunde (10 ticks)
+        }.runTaskTimer(this, 0L, 10L);
     }
 
     public Set<UUID> getPlayersWithHoe() {

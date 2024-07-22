@@ -61,8 +61,8 @@ public class ScytheManager implements Listener {
         this.enderScytheCooldown = configManager.getConfig().getLong("enderscythe-cooldown", 500);
         this.enderScytheRange = configManager.getConfig().getInt("enderscythe-range", 30);
         this.damagePlayers = configManager.getConfig().getBoolean("damage-players", true);
-        this.laserColor = configManager.getConfig().getString("ender-scythe.laser-color", "#800080"); // Implicit PURPLE
-        this.maxScytheLevel = Math.max(configManager.getConfig().getInt("enderscythe-max-level", 2), 1); // Citește nivelul maxim din config, dar nu mai mic de 1
+        this.laserColor = configManager.getConfig().getString("ender-scythe.laser-color", "#800080");
+        this.maxScytheLevel = Math.max(configManager.getConfig().getInt("enderscythe-max-level", 2), 1);
         this.particlesEnabled = configManager.getConfig().getBoolean("enderscythe-particles", true);
 
         // Clear and reload particle settings
@@ -338,7 +338,7 @@ public class ScytheManager implements Listener {
                 }
 
                 int newLevel = currentLevel + 1;
-                meta = updateScytheLore(meta, newLevel); // Actualizăm doar lore-ul și numele cu nivelul corect
+                meta = updateScytheLore(meta, newLevel);
                 item.setItemMeta(meta);
                 player.sendMessage(configManager.getMessagesConfig().getString("upgrade-success").replace("{level}", String.valueOf(newLevel)));
             }
