@@ -21,10 +21,42 @@ damage-players: false # Set to true if you want players to use this Scythe in Pv
 enderscythe-damage: 20 # damage
 enderscythe-cooldown: 500 # miliseconds || this means 0.5 seconds
 enderscythe-range: 32
+enderscythe-max-level: 2 # Max level for the EnderScythe (cannot be 0)
 
 # Activate or deactivate your Scythe's particles in case your players are bothered by that:
-ender-scythe-level1-particles: true
-ender-scythe-level2-particles: true
+enderscythe-particles: true
+
+# Particle settings for each level
+particle-settings:
+  1:
+    type: "PORTAL"
+    count: 5
+    offset: 0.5, 1, 0.5
+    extra: 0
+  2:
+    type: "HEART"
+    count: 1
+    offset: 0.5, 1, 0.5
+    extra: 0
+  3:
+    type: "REDSTONE"
+    count: 10
+    offsetX: 0.5
+    offsetY: 1
+    offsetZ: 0.5
+    extra: 0
+    color: "#FF0000" # Color of REDSTONE particles
+    size: 1.0 # Size of particles
+  4:
+    type: "VILLAGER_HAPPY"
+    count: 30
+    offset: 0.5, 1, 0.5
+    extra: 0
+  5:
+    type: "FLAME"
+    count: 3
+    offset: 0.5, 1, 0.5
+    extra: 0
 
 # Set world where EnderScythe can be used:
 # if you don't put your world here, scythe won't work
@@ -33,6 +65,7 @@ enderscythe-use-worlds:
   - enter
   - your
   - world names
+  - lobby
 
 # EnderScythe display settings:
 ender-scythe:
