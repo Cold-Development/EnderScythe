@@ -1,6 +1,7 @@
 # EnderScythe
 
 **EnderScythe** is a powerful Minecraft plugin that introduces a unique weapon - the Ender Scythe. Players can upgrade this special scythe to netherite while retaining its unique properties. The plugin supports multiple levels, with configurable damage, cooldown, and range. The scythe cannot be crafted but can be upgraded using a special item.
+
 **Note** that this plugin is not using any custom resource pack nor a custom item. The Scythe seen in photos is from my texturepack replacing a hoe.
 
 ## Features
