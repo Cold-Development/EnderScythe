@@ -10,6 +10,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -38,13 +39,15 @@ public class ScytheManager implements Listener {
     private int enderScytheRange;
     private boolean damagePlayers;
     private String laserColor;
-    private boolean level1ParticlesEnabled;
-    private boolean level2ParticlesEnabled;
+    private boolean particlesEnabled;
+    private int maxScytheLevel;
+    private Map<Integer, ParticleSettings> particleSettingsMap;
 
     public ScytheManager(JavaPlugin plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.enderScytheKey = new NamespacedKey(plugin, "isEnderScythe");
+        this.particleSettingsMap = new HashMap<>();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         reloadConfigValues();
@@ -52,21 +55,49 @@ public class ScytheManager implements Listener {
         plugin.getServer().getScheduler().runTaskTimer(plugin, this::spawnParticles, 0L, 10L);
     }
 
+
     public void reloadConfigValues() {
         this.enderScytheDamage = configManager.getConfig().getDouble("enderscythe-damage", 5.0);
         this.enderScytheCooldown = configManager.getConfig().getLong("enderscythe-cooldown", 500);
         this.enderScytheRange = configManager.getConfig().getInt("enderscythe-range", 30);
         this.damagePlayers = configManager.getConfig().getBoolean("damage-players", true);
-        this.laserColor = configManager.getConfig().getString("ender-scythe.laser-color", "#800080");
-        this.level1ParticlesEnabled = configManager.getConfig().getBoolean("ender-scythe-level1-particles", true);
-        this.level2ParticlesEnabled = configManager.getConfig().getBoolean("ender-scythe-level2-particles", true);
+        this.laserColor = configManager.getConfig().getString("ender-scythe.laser-color", "#800080"); // Implicit PURPLE
+        this.maxScytheLevel = Math.max(configManager.getConfig().getInt("enderscythe-max-level", 2), 1); // Citește nivelul maxim din config, dar nu mai mic de 1
+        this.particlesEnabled = configManager.getConfig().getBoolean("enderscythe-particles", true);
+
+        // Clear and reload particle settings
+        this.particleSettingsMap.clear();
+        ConfigurationSection particleSection = configManager.getConfig().getConfigurationSection("particle-settings");
+        if (particleSection != null) {
+            for (String key : particleSection.getKeys(false)) {
+                int level = Integer.parseInt(key);
+                ConfigurationSection section = particleSection.getConfigurationSection(key);
+                if (section != null) {
+                    this.particleSettingsMap.put(level, new ParticleSettings(section));
+                }
+            }
+        }
     }
 
-    public void startParticleTask() {
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::spawnParticles, 0L, 10L);
+    private void loadParticleSettings() {
+        ConfigurationSection section = configManager.getConfig().getConfigurationSection("particle-settings");
+        if (section != null) {
+            particleSettingsMap.clear();
+            for (String key : section.getKeys(false)) {
+                int level = Integer.parseInt(key);
+                ParticleSettings settings = new ParticleSettings(section.getConfigurationSection(key));
+                particleSettingsMap.put(level, settings);
+            }
+        }
     }
 
-    private void spawnParticles() {
+    public int getMaxScytheLevel() {
+        return maxScytheLevel;
+    }
+
+    void spawnParticles() {
+        if (!particlesEnabled) return;
+
         for (UUID playerId : playersWithScythe) {
             Player player = plugin.getServer().getPlayer(playerId);
             if (player != null && player.isOnline()) {
@@ -76,19 +107,99 @@ public class ScytheManager implements Listener {
                     if (meta != null) {
                         int level = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
 
-                        if (level == 1) {
-                            if (level1ParticlesEnabled) {
-                                player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30, 0.5, 1, 0.5, 0);
-                            }
-                        } else if (level == 2) {
-                            if (level2ParticlesEnabled) {
-                                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 1.0F);
-                                player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation(), 30, 0.5, 1, 0.5, 0, dustOptions);
+                        if (particleSettingsMap.containsKey(level)) {
+                            ParticleSettings settings = particleSettingsMap.get(level);
+                            if (settings.getType() == Particle.REDSTONE) {
+                                Particle.DustOptions dustOptions = new Particle.DustOptions(settings.getColor(), settings.getSize());
+                                player.getWorld().spawnParticle(
+                                        settings.getType(),
+                                        player.getLocation(),
+                                        settings.getCount(),
+                                        settings.getOffsetX(),
+                                        settings.getOffsetY(),
+                                        settings.getOffsetZ(),
+                                        settings.getExtra(),
+                                        dustOptions
+                                );
+                            } else {
+                                player.getWorld().spawnParticle(
+                                        settings.getType(),
+                                        player.getLocation(),
+                                        settings.getCount(),
+                                        settings.getOffsetX(),
+                                        settings.getOffsetY(),
+                                        settings.getOffsetZ(),
+                                        settings.getExtra()
+                                );
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    private static class ParticleSettings {
+        private final Particle type;
+        private final int count;
+        private final double offsetX;
+        private final double offsetY;
+        private final double offsetZ;
+        private final double extra;
+        private final Color color;
+        private final float size;
+
+        public ParticleSettings(ConfigurationSection section) {
+            this.type = Particle.valueOf(section.getString("type"));
+            this.count = section.getInt("count", 30);
+            this.offsetX = section.getDouble("offsetX", 0.5);
+            this.offsetY = section.getDouble("offsetY", 1);
+            this.offsetZ = section.getDouble("offsetZ", 0.5);
+            this.extra = section.getDouble("extra", 0);
+            if (type == Particle.REDSTONE) {
+                String colorStr = section.getString("color", "#FF0000"); // Default red color
+                this.color = Color.fromRGB(
+                        Integer.valueOf(colorStr.substring(1, 3), 16),
+                        Integer.valueOf(colorStr.substring(3, 5), 16),
+                        Integer.valueOf(colorStr.substring(5, 7), 16)
+                );
+                this.size = (float) section.getDouble("size", 1.0);
+            } else {
+                this.color = null;
+                this.size = 0;
+            }
+        }
+
+        public Particle getType() {
+            return type;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public double getOffsetX() {
+            return offsetX;
+        }
+
+        public double getOffsetY() {
+            return offsetY;
+        }
+
+        public double getOffsetZ() {
+            return offsetZ;
+        }
+
+        public double getExtra() {
+            return extra;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public float getSize() {
+            return size;
         }
     }
 
@@ -117,7 +228,7 @@ public class ScytheManager implements Listener {
     }
 
     public boolean isDamagePlayers() {
-        return configManager.getConfig().getBoolean("damage-players");
+        return damagePlayers;
     }
 
     public ConfigManager getConfigManager() {
@@ -216,19 +327,18 @@ public class ScytheManager implements Listener {
 
     public void upgradeScythe(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && isEnderScythe(item)) {
+        if (item != null && (item.getType() == Material.DIAMOND_HOE || item.getType() == Material.NETHERITE_HOE) && isEnderScythe(item)) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 int currentLevel = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
-                int maxLevel = 2;
 
-                if (currentLevel >= maxLevel) {
-                    player.sendMessage(configManager.getMessagesConfig().getString("messages.max-level-reached"));
+                if (currentLevel >= maxScytheLevel) {
+                    player.sendMessage(Objects.requireNonNull(configManager.getMessagesConfig().getString("messages.max-level-reached")));
                     return;
                 }
 
                 int newLevel = currentLevel + 1;
-                meta = updateScytheLore(meta, newLevel);
+                meta = updateScytheLore(meta, newLevel); // Actualizăm doar lore-ul și numele cu nivelul corect
                 item.setItemMeta(meta);
                 player.sendMessage(configManager.getMessagesConfig().getString("upgrade-success").replace("{level}", String.valueOf(newLevel)));
             }

@@ -24,10 +24,10 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
     private final ScytheManager scytheManager;
     private final MessageManager messageManager;
 
-    public UpgradeItemHandler(JavaPlugin plugin, MessageManager messageManager) {
+    public UpgradeItemHandler(JavaPlugin plugin, MessageManager messageManager, ScytheManager scytheManager) {
         this.plugin = plugin;
         this.upgradeKey = new NamespacedKey(plugin, "scytheUpgradeItem");
-        this.scytheManager = new ScytheManager(plugin, new ConfigManager(plugin));
+        this.scytheManager = scytheManager; // Asigură-te că utilizezi instanța corectă
         this.messageManager = messageManager;
     }
 
@@ -52,7 +52,7 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
                     ItemMeta currentMeta = currentItem.getItemMeta();
                     if ((currentMeta != null && currentItem.getType() == Material.DIAMOND_HOE) || (currentMeta != null && currentItem.getType() == Material.NETHERITE_HOE)) {
                         int currentLevel = currentMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
-                        int maxLevel = 2;
+                        int maxLevel = scytheManager.getMaxScytheLevel(); // Folosește metoda getMaxScytheLevel
 
                         if (currentLevel >= maxLevel) {
                             player.sendMessage(messageManager.getPrefixedMessage("max-level-reached"));
@@ -65,6 +65,7 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
                         currentItem.setItemMeta(currentMeta);
                         event.setCancelled(true);
                         cursorItem.setAmount(cursorItem.getAmount() - 1);
+                        player.sendMessage(messageManager.getPrefixedMessage("upgrade-success").replace("{level}", String.valueOf(newLevel))); // Feedback de succes
                     }
                 } else {
                     player.sendMessage(messageManager.getPrefixedMessage("not-ender-scythe"));

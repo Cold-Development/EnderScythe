@@ -31,7 +31,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 configManager.reloadConfig();
                 messageManager.reloadMessagesConfig();
-                scytheManager.reloadConfigValues();
+                scytheManager.reloadConfigValues(); // Apelează metoda de reîncărcare a valorilor de configurare
                 sender.sendMessage(messageManager.getPrefixedMessage("config-reloaded"));
                 return true;
             } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {

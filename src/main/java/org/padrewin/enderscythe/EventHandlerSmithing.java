@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.inventory.PrepareGrindstoneEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.inventory.ItemStack;
@@ -47,7 +48,7 @@ public class EventHandlerSmithing implements Listener {
                     meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, baseMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER));
                     meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
                     resultItem.setItemMeta(meta);
-                    event.setResult(resultItem); // Setăm rezultatul conversiei
+                    event.setResult(resultItem);
                 }
             }
         }
@@ -67,7 +68,7 @@ public class EventHandlerSmithing implements Listener {
         ItemStack secondItem = event.getInventory().getItem(1);
 
         if ((firstItem != null && isEnderScythe(firstItem)) || (secondItem != null && isEnderScythe(secondItem))) {
-            event.setResult(null);
+            event.setResult(new ItemStack(Material.AIR)); //
         }
     }
 
@@ -80,6 +81,16 @@ public class EventHandlerSmithing implements Listener {
                 event.getInventory().setResult(new ItemStack(Material.AIR));
                 break;
             }
+        }
+    }
+
+    @EventHandler
+    public void onPrepareGrindstone(PrepareGrindstoneEvent event) {
+        ItemStack firstItem = event.getInventory().getItem(0);
+        ItemStack secondItem = event.getInventory().getItem(1);
+
+        if ((firstItem != null && isEnderScythe(firstItem)) || (secondItem != null && isEnderScythe(secondItem))) {
+            event.setResult(new ItemStack(Material.AIR));
         }
     }
 }
