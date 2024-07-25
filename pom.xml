@@ -14,6 +14,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <final.name>EnderScythe</final.name> <!-- Definește numele final al JAR-ului -->
     </properties>
 
     <build>
@@ -25,6 +26,14 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version> <!-- Versiune recomandată pentru maven-jar-plugin -->
+                <configuration>
+                    <finalName>${project.build.finalName}</finalName>
                 </configuration>
             </plugin>
             <plugin>
