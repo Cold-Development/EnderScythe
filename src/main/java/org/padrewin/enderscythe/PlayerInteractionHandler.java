@@ -1,5 +1,6 @@
 package org.padrewin.enderscythe;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -11,6 +12,9 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PlayerInteractionHandler implements Listener {
 
@@ -36,7 +40,7 @@ public class PlayerInteractionHandler implements Listener {
             if (meta != null && scytheManager.isEnderScythe(item)) {
 
                 if (!configManager.getConfig().getStringList("enderscythe-use-worlds").contains(player.getWorld().getName())) {
-                    player.sendMessage(messageManager.getPrefixedMessage("not-allowed-world"));
+                    player.sendMessage(applyHexColors(messageManager.getPrefixedMessage("not-allowed-world")));
                     return;
                 }
 
@@ -67,5 +71,20 @@ public class PlayerInteractionHandler implements Listener {
             }
         }
         plugin.getPlayersWithHoe().remove(player.getUniqueId());
+    }
+
+    private String applyHexColors(String message) {
+        Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length());
+
+        while (matcher.find()) {
+            String hexColor = matcher.group(1);
+            String replacement = ChatColor.of("#" + hexColor).toString();
+            matcher.appendReplacement(buffer, replacement);
+        }
+
+        matcher.appendTail(buffer);
+        return ChatColor.translateAlternateColorCodes('&', buffer.toString());
     }
 }

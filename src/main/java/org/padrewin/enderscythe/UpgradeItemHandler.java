@@ -1,5 +1,6 @@
 package org.padrewin.enderscythe;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -16,6 +17,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UpgradeItemHandler implements Listener, CommandExecutor {
 
@@ -107,10 +110,11 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
             List<String> lore = plugin.getConfig().getStringList("upgrade-item.lore");
 
             if (displayName != null) {
-                meta.setDisplayName(displayName);
+                meta.setDisplayName(applyHexColors(displayName));
             }
 
             if (lore != null) {
+                lore.replaceAll(this::applyHexColors);
                 meta.setLore(lore);
             }
 
@@ -118,5 +122,20 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
             item.setItemMeta(meta);
         }
         return item;
+    }
+
+    private String applyHexColors(String message) {
+        Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length());
+
+        while (matcher.find()) {
+            String hexColor = matcher.group(1);
+            String replacement = ChatColor.of("#" + hexColor).toString();
+            matcher.appendReplacement(buffer, replacement);
+        }
+
+        matcher.appendTail(buffer);
+        return ChatColor.translateAlternateColorCodes('&', buffer.toString());
     }
 }

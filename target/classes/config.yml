@@ -1,20 +1,20 @@
 #########################################################################################################
 #    Keep in mind that this plugin does not fully support HEX color codes. (#FF0000)                    #
 #    You can use https://www.birdflop.com/resources/rgb/ to create your colors                          #
-#    You can use old format [§x§r§r§g§g§b§b] or simply follow the pattern that's already used           #
+#    You can fully use hex colors as disaplyed in this config. No limits                                #
 #    Developer; padrewin                                                                                #
 #    GitHub; https://github.com/padrewin                                                                #
-#    Links: https://linktr.ee/padrewin || https://discord.mc-1st.ro                                     #
+#    Links: https://icedcode.dev || https://discord.mc-1st.ro                                           #
 #########################################################################################################
 
 # Plugin Prefix:
-plugin-prefix: "&8「§x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce」&7» "
+plugin-prefix: "&7「&#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe&7」&7» "
 
 # Scythe Shard - item to upgrade your Scythe:
 upgrade-item:
-  name: "§x§6§F§0§0§C§D✯ §x§6§F§0§0§C§DS§x§7§5§0§A§D§0c§x§7§B§1§4§D§3y§x§8§1§1§E§D§5t§x§8§7§2§8§D§8h§x§8§D§3§2§D§Be §x§9§A§4§6§E§1S§x§A§0§5§0§E§4h§x§A§6§5§A§E§6a§x§A§C§6§4§E§9r§x§B§2§6§E§E§Cd"
+  name: "&#6F00CD✯ &#6F00CDS&#750AD0c&#7B14D3y&#811ED5t&#8728D8h&#8D32DBe &#9A46E1S&#A050E4h&#A65AE6a&#AC64E9r&#B26EECd"
   lore:
-    - "§a⬆ §7Use this item to upgrade your §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce§"
+    - "&a⬆ &7Use this item to upgrade your &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe"
 
 # EnderScythe settings:
 damage-players: false # Set to true if you want players to use this Scythe in PvP
@@ -69,12 +69,12 @@ enderscythe-use-worlds:
 
 # EnderScythe display settings:
 ender-scythe:
-  name: "§x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce"
-  level: "§8「%scythe_level%§8」" # Don't ever change this placeholder except its color. Colors are safe to be edited. Same applies for below lore section
+  name: "&#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe"
+  level: "&8「%scythe_level%&8」" # Don't ever change this placeholder except its color. Colors are safe to be edited. Same applies for below lore section
   lore:
-    - "§4🗡 §7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ᴄᴀɴ ᴅᴇᴀʟ %enderscythe_damage% ᴅᴀᴍᴀɢᴇ"
-    - "§c📏 §7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ʀᴀɴɢᴇ ᴏꜰ %enderscythe_range% ʙʟᴏᴄᴋꜱ"
-    - "§d🕓 §7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ᴄᴏᴏʟᴅᴏᴡɴ ᴏꜰ %enderscythe_cooldown% ꜱᴇᴄᴏɴᴅꜱ"
+    - "&4🗡 &7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ᴄᴀɴ ᴅᴇᴀʟ %enderscythe_damage% ᴅᴀᴍᴀɢᴇ"
+    - "&c📏 &7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ʀᴀɴɢᴇ ᴏꜰ %enderscythe_range% ʙʟᴏᴄᴋꜱ"
+    - "&d🕓 &7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ᴄᴏᴏʟᴅᴏᴡɴ ᴏꜰ %enderscythe_cooldown% ꜱᴇᴄᴏɴᴅꜱ"
   lore-placeholders:
     - "%enderscythe_damage%"
     - "%enderscythe_range%"

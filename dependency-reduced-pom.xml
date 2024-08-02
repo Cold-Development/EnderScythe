@@ -4,7 +4,7 @@
   <groupId>org.padrewin</groupId>
   <artifactId>EnderScythe</artifactId>
   <name>EnderScythe</name>
-  <version>1.0</version>
+  <version>1.2</version>
   <build>
     <resources>
       <resource>

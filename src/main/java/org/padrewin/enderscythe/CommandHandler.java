@@ -31,6 +31,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 configManager.reloadConfig();
                 messageManager.reloadMessagesConfig();
+                messageManager.updatePluginPrefix();
                 scytheManager.reloadConfigValues();
                 sender.sendMessage(messageManager.getPrefixedMessage("config-reloaded"));
                 return true;

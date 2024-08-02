@@ -1,5 +1,6 @@
 package org.padrewin.enderscythe;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EventHandlerSmithing implements Listener {
 
@@ -42,8 +48,8 @@ public class EventHandlerSmithing implements Listener {
             if (meta != null) {
                 ItemMeta baseMeta = baseItem.getItemMeta();
                 if (baseMeta != null) {
-                    meta.setDisplayName(baseMeta.getDisplayName());
-                    meta.setLore(baseMeta.getLore());
+                    meta.setDisplayName(applyHexColors(baseMeta.getDisplayName()));
+                    meta.setLore(applyHexColors(baseMeta.getLore()));
 
                     meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, baseMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER));
                     meta.getPersistentDataContainer().set(enderScytheKey, PersistentDataType.STRING, "true");
@@ -92,5 +98,28 @@ public class EventHandlerSmithing implements Listener {
         if ((firstItem != null && isEnderScythe(firstItem)) || (secondItem != null && isEnderScythe(secondItem))) {
             event.setResult(new ItemStack(Material.AIR));
         }
+    }
+
+    private String applyHexColors(String message) {
+        Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length());
+
+        while (matcher.find()) {
+            String hexColor = matcher.group(1);
+            String replacement = ChatColor.of("#" + hexColor).toString();
+            matcher.appendReplacement(buffer, replacement);
+        }
+
+        matcher.appendTail(buffer);
+        return ChatColor.translateAlternateColorCodes('&', buffer.toString());
+    }
+
+    private List<String> applyHexColors(List<String> messages) {
+        List<String> coloredMessages = new ArrayList<>();
+        for (String message : messages) {
+            coloredMessages.add(applyHexColors(message));
+        }
+        return coloredMessages;
     }
 }

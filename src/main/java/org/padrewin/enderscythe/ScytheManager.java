@@ -6,6 +6,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -26,6 +27,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScytheManager implements Listener {
 
@@ -242,14 +245,14 @@ public class ScytheManager implements Listener {
     }
 
     public String generateScytheName() {
-        return applyHexColors(Objects.requireNonNull(configManager.getConfig().getString("ender-scythe.name")));
+        String name = configManager.getConfig().getString("ender-scythe.name");
+        return name != null ? applyHexColors(name) : null;
     }
 
     public String generateScytheLevel(int level) {
         String levelTemplate = configManager.getConfig().getString("ender-scythe.level");
         if (levelTemplate == null) {
-            //plugin.getLogger().severe("Config key 'ender-scythe.level' not found in config.yml");
-            return "§8「" + level + "§8」";
+            return applyHexColors("&8「" + level + "&8」");
         }
         return applyHexColors(levelTemplate.replace("%scythe_level%", String.valueOf(level)));
     }
@@ -258,7 +261,7 @@ public class ScytheManager implements Listener {
         List<String> loreLines = configManager.getConfig().getStringList("ender-scythe.lore");
         List<String> updatedLore = new ArrayList<>();
         for (String line : loreLines) {
-            updatedLore.add(applyPlaceholders(line, level));
+            updatedLore.add(applyHexColors(applyPlaceholders(line, level)));
         }
         return updatedLore;
     }
@@ -319,9 +322,13 @@ public class ScytheManager implements Listener {
     public void giveEnderScythe(Player player, int level) {
         ItemStack enderScythe = createEnderScythe(level);
         player.getInventory().addItem(enderScythe);
+        String pluginPrefix = configManager.getConfig().getString("plugin-prefix");
         String message = configManager.getMessagesConfig().getString("messages.receive-hoe");
-        if (message != null) {
-            player.sendMessage(message);
+
+        if (message != null && pluginPrefix != null) {
+            String prefixedMessage = pluginPrefix + "" + message;
+
+            player.sendMessage(applyHexColors(prefixedMessage));
         }
     }
 
@@ -425,25 +432,17 @@ public class ScytheManager implements Listener {
     }
 
     private String applyHexColors(String message) {
-        StringBuilder sb = new StringBuilder();
-        char[] chars = message.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '&' && i + 7 < chars.length && chars[i + 1] == '#' &&
-                    isHexChar(chars[i + 2]) && isHexChar(chars[i + 3]) && isHexChar(chars[i + 4]) &&
-                    isHexChar(chars[i + 5]) && isHexChar(chars[i + 6]) && isHexChar(chars[i + 7])) {
-                sb.append("§x");
-                for (int j = 2; j <= 7; j++) {
-                    sb.append('§').append(chars[i + j]);
-                }
-                i += 7;
-            } else {
-                sb.append(chars[i]);
-            }
-        }
-        return sb.toString();
-    }
+        Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length());
 
-    private boolean isHexChar(char c) {
-        return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
+        while (matcher.find()) {
+            String hexColor = matcher.group(1);
+            String replacement = ChatColor.of("#" + hexColor).toString();
+            matcher.appendReplacement(buffer, replacement);
+        }
+
+        matcher.appendTail(buffer);
+        return ChatColor.translateAlternateColorCodes('&', buffer.toString());
     }
 }
