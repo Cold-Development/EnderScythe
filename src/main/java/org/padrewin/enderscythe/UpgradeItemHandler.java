@@ -99,6 +99,25 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
                 return true;
             }
         }
+        if (command.getName().equalsIgnoreCase("giveupgradeitem")) {
+            if (sender instanceof Player) {
+                if (args.length >= 1) {  // Check if args has more than 1 element
+                    String playerName = args[0];
+                    Player player = plugin.getServer().getPlayer(playerName);
+                    if (player != null) {  // Check if the player exists
+                        ItemStack upgradeItem = createUpgradeItem();
+                        player.getInventory().addItem(upgradeItem);
+                        player.sendMessage(messageManager.getPrefixedMessage("receive-upgrade-item"));
+                    } else {
+                        sender.sendMessage(messageManager.getPrefixedMessage("player-not-found"));
+                    }
+                    return true;
+                } else {
+                    sender.sendMessage(messageManager.getPrefixedMessage("invalid-arguments"));
+                    return false;
+                }
+            }
+        }
         return false;
     }
 

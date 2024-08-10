@@ -218,6 +218,10 @@ public class ScytheManager implements Listener {
         return meta != null && meta.getPersistentDataContainer().has(enderScytheKey, PersistentDataType.STRING);
     }
 
+    public JavaPlugin getPlugin() {
+        return plugin;
+    }
+
     public double getEnderScytheDamage() {
         return enderScytheDamage;
     }
@@ -390,10 +394,10 @@ public class ScytheManager implements Listener {
                         if (entity != player) {
                             if (entity instanceof Player) {
                                 if (isDamagePlayers() && isPvPAllowed(player)) {
-                                    ((LivingEntity) entity).damage(damage);
+                                    ((LivingEntity) entity).damage(damage, player); // damage caused by player
                                 }
                             } else {
-                                ((LivingEntity) entity).damage(damage);
+                                ((LivingEntity) entity).damage(damage, player); // damage caused by player
                             }
                             break;
                         }

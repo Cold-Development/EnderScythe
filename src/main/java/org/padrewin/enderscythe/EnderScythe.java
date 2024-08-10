@@ -1,10 +1,8 @@
 package org.padrewin.enderscythe;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Particle;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +23,6 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
 
     @Override
     public void onEnable() {
-
         saveDefaultConfig();
 
         configManager = new ConfigManager(this);
@@ -36,19 +33,32 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
         this.getCommand("enderscythe").setExecutor(new CommandHandler(this, scytheManager, configManager, messageManager));
         this.getCommand("enderscythe").setTabCompleter(new CommandHandler(this, scytheManager, configManager, messageManager));
         this.getCommand("getupgradeitem").setExecutor(new UpgradeItemHandler(this, messageManager, scytheManager));
+        this.getCommand("giveupgradeitem").setExecutor(new UpgradeItemHandler(this, messageManager, scytheManager));
 
         UpgradeItemHandler upgradeItemHandler = new UpgradeItemHandler(this, messageManager, scytheManager);
         upgradeItemHandler.register();
 
         startParticleTask();
         getServer().getPluginManager().registerEvents(new EventHandlerSmithing(this), this);
+        getServer().getPluginManager().registerEvents(new EntityKillListener(scytheManager, this),this); // Înregistrează noul listener
 
-        getLogger().info("EnderScythe has been enabled!");
+        String name = getDescription().getName();
+        getLogger().info("");
+        getLogger().info("  ____ ___  _     ____  ");
+        getLogger().info(" / ___/ _ \\| |   |  _ \\ ");
+        getLogger().info("| |  | | | | |   | | | |");
+        getLogger().info("| |__| |_| | |___| |_| |");
+        getLogger().info(" \\____\\___/|_____|____/");
+        getLogger().info("    " + name + " v" + getDescription().getVersion());
+        getLogger().info("    Author(s): " + (String)getDescription().getAuthors().get(0));
+        getLogger().info("    (c) Cold Development. All rights reserved.");
+        getLogger().info("");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("EnderScythe has been disabled.");
+        getLogger().info("EnderScythe disabled.");
+        getLogger().info("See you soon :)");
     }
 
     private void startParticleTask() {

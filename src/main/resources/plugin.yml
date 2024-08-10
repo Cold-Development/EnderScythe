@@ -2,7 +2,7 @@ name: EnderScythe
 version: '${project.version}'
 main: org.padrewin.enderscythe.EnderScythe
 api-version: '1.20'
-depend: [ WorldGuard ]
+softdepend: [ WorldGuard ]
 author: 'padrewin'
 commands:
   enderscythe:
@@ -10,6 +10,10 @@ commands:
     permission: enderscythe.admin
     aliases: [es]
   getupgradeitem:
-    description: Give a player the EnderScythe or reload the plugin.
+    description: Gives an EnderScythe shard to yourself.
     permission: enderscythe.admin
     aliases: [esgui, getui]
+  giveupgradeitem:
+    description: Give a player an EnderScythe shard.
+    permission: enderscythe.admin
+    aliases: [esgive]

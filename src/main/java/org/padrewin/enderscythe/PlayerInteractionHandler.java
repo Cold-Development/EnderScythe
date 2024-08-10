@@ -39,6 +39,11 @@ public class PlayerInteractionHandler implements Listener {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && scytheManager.isEnderScythe(item)) {
 
+                // Anulează evenimentul dacă jucătorul folosește EnderScythe pe un bloc
+                if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    event.setCancelled(true);
+                }
+
                 if (!configManager.getConfig().getStringList("enderscythe-use-worlds").contains(player.getWorld().getName())) {
                     player.sendMessage(applyHexColors(messageManager.getPrefixedMessage("not-allowed-world")));
                     return;
