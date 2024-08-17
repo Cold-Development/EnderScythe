@@ -12,8 +12,8 @@ commands:
   getupgradeitem:
     description: Gives an EnderScythe shard to yourself.
     permission: enderscythe.admin
-    aliases: [esgui, getui]
+    aliases: [esgui, getui, esupgrade]
   giveupgradeitem:
     description: Give a player an EnderScythe shard.
     permission: enderscythe.admin
-    aliases: [esgive]
+    aliases: [esgive, esgiveshard]
