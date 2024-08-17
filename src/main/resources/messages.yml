@@ -9,3 +9,4 @@ messages:
   not-ender-scythe: "&7This is not an &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe&7."
   receive-upgrade-item: "&7You have received an &#6F00CDS&#750AD0c&#7B14D3y&#811ED5t&#8728D8h&#8D32DBe &#9A46E1S&#A050E4h&#A65AE6a&#AC64E9r&#B26EECd&7!"
   max-level-reached: "&7This &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe &7is at &#DA70D6level max&7."
+  invalid-arguments: "&cInclude player name."
