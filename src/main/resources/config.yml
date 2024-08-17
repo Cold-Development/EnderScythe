@@ -1,10 +1,9 @@
 #########################################################################################################
-#    Keep in mind that this plugin does not fully support HEX color codes. (#FF0000)                    #
+#    Plugin now supports full hex color codes.                                                          #
 #    You can use https://www.birdflop.com/resources/rgb/ to create your colors                          #
-#    You can fully use hex colors as disaplyed in this config. No limits                                #
-#    Developer; padrewin                                                                                #
-#    GitHub; https://github.com/padrewin                                                                #
-#    Links: https://icedcode.dev || https://discord.mc-1st.ro                                           #
+#    Developer; padrewin || Cold Development                                                            #
+#    GitHub; https://github.com/padrewin || https://github.com/Cold-Development                         #
+#    Links: https://colddev.dev || https://discord.colddev.dev                                          #
 #########################################################################################################
 
 # Plugin Prefix:
