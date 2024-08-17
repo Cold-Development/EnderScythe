@@ -7,16 +7,19 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,6 +141,16 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
             }
 
             meta.getPersistentDataContainer().set(upgradeKey, PersistentDataType.STRING, "upgrade");
+
+            // Adăugare enchantment random
+            Random random = new Random();
+            Enchantment[] enchantments = Enchantment.values();
+            Enchantment randomEnchantment = enchantments[random.nextInt(enchantments.length)];
+            meta.addEnchant(randomEnchantment, 1, true);
+
+            // Ascunderea enchantment-ului pentru a avea doar glint-ul pe item
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
             item.setItemMeta(meta);
         }
         return item;
