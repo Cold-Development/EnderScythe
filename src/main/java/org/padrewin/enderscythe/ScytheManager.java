@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 
 public class ScytheManager implements Listener {
 
-    private final JavaPlugin plugin;
+    private static JavaPlugin plugin = null;
     private final ConfigManager configManager;
     private final Set<UUID> playersWithScythe = new HashSet<>();
     private final NamespacedKey enderScytheKey;
@@ -68,19 +68,9 @@ public class ScytheManager implements Listener {
         this.maxScytheLevel = Math.max(configManager.getConfig().getInt("enderscythe-max-level", 2), 1);
         this.particlesEnabled = configManager.getConfig().getBoolean("enderscythe-particles", true);
 
-        // Clear and reload particle settings
-        this.particleSettingsMap.clear();
-        ConfigurationSection particleSection = configManager.getConfig().getConfigurationSection("particle-settings");
-        if (particleSection != null) {
-            for (String key : particleSection.getKeys(false)) {
-                int level = Integer.parseInt(key);
-                ConfigurationSection section = particleSection.getConfigurationSection(key);
-                if (section != null) {
-                    this.particleSettingsMap.put(level, new ParticleSettings(section));
-                }
-            }
-        }
+        loadParticleSettings();
     }
+
 
     private void loadParticleSettings() {
         ConfigurationSection section = configManager.getConfig().getConfigurationSection("particle-settings");
@@ -99,7 +89,10 @@ public class ScytheManager implements Listener {
     }
 
     void spawnParticles() {
-        if (!particlesEnabled) return;
+        if (!particlesEnabled) {
+            plugin.getLogger().info("Particles are disabled.");
+            return;
+        }
 
         for (UUID playerId : playersWithScythe) {
             Player player = plugin.getServer().getPlayer(playerId);
@@ -112,28 +105,18 @@ public class ScytheManager implements Listener {
 
                         if (particleSettingsMap.containsKey(level)) {
                             ParticleSettings settings = particleSettingsMap.get(level);
-                            if (settings.getType() == Particle.REDSTONE) {
+                            Particle particleType = settings.getType();
+                            int count = settings.getCount();
+                            double offsetX = settings.getOffsetX();
+                            double offsetY = settings.getOffsetY();
+                            double offsetZ = settings.getOffsetZ();
+                            double extra = settings.getExtra();
+
+                            if (particleType == Particle.REDSTONE) {
                                 Particle.DustOptions dustOptions = new Particle.DustOptions(settings.getColor(), settings.getSize());
-                                player.getWorld().spawnParticle(
-                                        settings.getType(),
-                                        player.getLocation(),
-                                        settings.getCount(),
-                                        settings.getOffsetX(),
-                                        settings.getOffsetY(),
-                                        settings.getOffsetZ(),
-                                        settings.getExtra(),
-                                        dustOptions
-                                );
+                                player.getWorld().spawnParticle(particleType, player.getLocation(), count, offsetX, offsetY, offsetZ, extra, dustOptions);
                             } else {
-                                player.getWorld().spawnParticle(
-                                        settings.getType(),
-                                        player.getLocation(),
-                                        settings.getCount(),
-                                        settings.getOffsetX(),
-                                        settings.getOffsetY(),
-                                        settings.getOffsetZ(),
-                                        settings.getExtra()
-                                );
+                                player.getWorld().spawnParticle(particleType, player.getLocation(), count, offsetX, offsetY, offsetZ, extra);
                             }
                         }
                     }
@@ -159,6 +142,7 @@ public class ScytheManager implements Listener {
             this.offsetY = section.getDouble("offsetY", 1);
             this.offsetZ = section.getDouble("offsetZ", 0.5);
             this.extra = section.getDouble("extra", 0);
+
             if (type == Particle.REDSTONE) {
                 String colorStr = section.getString("color", "#FF0000"); // Default red color
                 this.color = Color.fromRGB(
@@ -171,6 +155,20 @@ public class ScytheManager implements Listener {
                 this.color = null;
                 this.size = 0;
             }
+        }
+
+        @Override
+        public String toString() {
+            return "ParticleSettings{" +
+                    "type=" + type +
+                    ", count=" + count +
+                    ", offsetX=" + offsetX +
+                    ", offsetY=" + offsetY +
+                    ", offsetZ=" + offsetZ +
+                    ", extra=" + extra +
+                    ", color=" + color +
+                    ", size=" + size +
+                    '}';
         }
 
         public Particle getType() {
@@ -210,12 +208,9 @@ public class ScytheManager implements Listener {
         if (item == null) {
             return false;
         }
-        Material itemType = item.getType();
-        if (itemType != Material.DIAMOND_HOE && itemType != Material.NETHERITE_HOE) {
-            return false;
-        }
         ItemMeta meta = item.getItemMeta();
-        return meta != null && meta.getPersistentDataContainer().has(enderScytheKey, PersistentDataType.STRING);
+        boolean isEnderScythe = meta != null && meta.getPersistentDataContainer().has(enderScytheKey, PersistentDataType.STRING);
+        return isEnderScythe;
     }
 
     public JavaPlugin getPlugin() {
@@ -415,13 +410,8 @@ public class ScytheManager implements Listener {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 int level = meta.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "scytheLevel"), PersistentDataType.INTEGER, 1);
-                String baseName = generateScytheName();
-                String levelTemplate = generateScytheLevel(level);
-                String configName = baseName + " " + levelTemplate;
-                if (meta.getDisplayName().equals(configName)) {
-                    playersWithScythe.add(player.getUniqueId());
-                    return;
-                }
+                playersWithScythe.add(player.getUniqueId());
+                return;
             }
         }
         playersWithScythe.remove(player.getUniqueId());
