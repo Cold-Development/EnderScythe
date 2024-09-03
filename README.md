@@ -1,7 +1,7 @@
 ![image](https://github.com/user-attachments/assets/b4dab99a-e073-43f1-a95d-e291875006e4)
 
 # ☭ EnderScythe 
-![Static Badge](https://img.shields.io/badge/Version-v1.1-blue?color=A020F0)
+![Static Badge](https://img.shields.io/badge/Version-v1.4-blue?color=A020F0)
 
 ![Static Badge](https://img.shields.io/badge/Soft_Dependency-WorldGuard-blue)
 
@@ -27,27 +27,26 @@ The plugin is highly configurable through the `config.yml` and `messages.yml` fi
 
 ```yaml
 #########################################################################################################
-#    Keep in mind that this plugin does not fully support HEX color codes. (#FF0000)                    #
+#    Plugin now supports full hex color codes.                                                          #
 #    You can use https://www.birdflop.com/resources/rgb/ to create your colors                          #
-#    You can use this config as a guide                                                                 #
-#    Developer; padrewin                                                                                #
-#    GitHub; https://github.com/padrewin                                                                #
-#    Links: https://icedcode.dev || https://discord.mc-1st.ro                                           #
+#    Developer; padrewin || Cold Development                                                            #
+#    GitHub; https://github.com/padrewin || https://github.com/Cold-Development                         #
+#    Links: https://colddev.dev || https://discord.colddev.dev                                          #
 #########################################################################################################
 
 # Plugin Prefix:
-plugin-prefix: "&8「§x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce」&7» "
+plugin-prefix: "&7「&#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe&7」&7» "
 
 # Scythe Shard - item to upgrade your Scythe:
 upgrade-item:
-  name: "§x§6§F§0§0§C§D✯ §x§6§F§0§0§C§DS§x§7§5§0§A§D§0c§x§7§B§1§4§D§3y§x§8§1§1§E§D§5t§x§8§7§2§8§D§8h§x§8§D§3§2§D§Be §x§9§A§4§6§E§1S§x§A§0§5§0§E§4h§x§A§6§5§A§E§6a§x§A§C§6§4§E§9r§x§B§2§6§E§E§Cd"
+  name: "&#6F00CD✯ &#6F00CDS&#750AD0c&#7B14D3y&#811ED5t&#8728D8h&#8D32DBe &#9A46E1S&#A050E4h&#A65AE6a&#AC64E9r&#B26EECd"
   lore:
-   - "§a⬆ §7Use this item to upgrade your §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce§"
+    - "&a⬆ &7Use this item to upgrade your &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe"
 
 # EnderScythe settings:
 damage-players: false # Set to true if you want players to use this Scythe in PvP
 enderscythe-damage: 20 # damage
-enderscythe-cooldown: 500 # miliseconds || this means 0.5 seconds
+enderscythe-cooldown: 500 # milliseconds || this means 0.5 seconds
 enderscythe-range: 32
 enderscythe-max-level: 2 # Max level for the EnderScythe (cannot be 0)
 
@@ -97,14 +96,14 @@ enderscythe-use-worlds:
 
 # EnderScythe display settings:
 ender-scythe:
-  name: "§x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce"
-  level: "§8「%scythe_level%§8」" # Don't ever change this placeholder except its color. Colors are safe to be edited. Same applies for below lore section
+  name: "&#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe"
+  level: "&8「%scythe_level%&8」" # Don't ever change this placeholder except its color. Colors are safe to be edited. Same applies for below lore section
   lore:
-   - "§4 §7This scythe can deal %enderscythe_damage% damage"
-    - "§c §7This scythe has a range of %enderscythe_range% blocks"
-    - "§d §7This scythe has a cooldown of %enderscythe_cooldown% seconds"
+    - "&4🗡 &7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ᴄᴀɴ ᴅᴇᴀʟ %enderscythe_damage% ᴅᴀᴍᴀɢᴇ"
+    - "&c📏 &7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ʀᴀɴɢᴇ ᴏꜰ %enderscythe_range% ʙʟᴏᴄᴋꜱ"
+    - "&d🕓 &7ᴛʜɪꜱ ꜱᴄʏᴛʜᴇ ʜᴀꜱ ᴀ ᴄᴏᴏʟᴅᴏᴡɴ ᴏꜰ %enderscythe_cooldown% ꜱᴇᴄᴏɴᴅꜱ"
   lore-placeholders:
-   - "%enderscythe_damage%"
+    - "%enderscythe_damage%"
     - "%enderscythe_range%"
     - "%enderscythe_cooldown%"
   laser-color: "#800080" # Laser hex color (#800080) this is default PURPLE
@@ -112,16 +111,17 @@ ender-scythe:
 ![Static Badge](https://img.shields.io/badge/messages.yml-red?logo=imessage&logoColor=white)
 ```yaml
 messages:
-  receive-hoe: "§7You have received an §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce§7!"
-  config-reloaded: "§7Config reloaded."
-  give-success: "§7Successfully given an §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce §7to {player}."
-  player-not-found: "§7Player not found."
+  receive-hoe: "&7You have received an &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe&7!"
+  config-reloaded: "&7Config &areloaded."
+  give-success: "&7Successfully given an &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe&7 to {player}."
+  player-not-found: "&7Player not found."
   invalid-command: "&cInvalid command."
-  upgrade-success: "§7Ender Scythe upgraded to level {level}."
-  not-allowed-world: "§7You cannot use the Ender Scythe in this world."
-  not-ender-scythe: "§7This is not an §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce§7."
-  receive-upgrade-item: "§7You have received an upgrade item!"
-  max-level-reached: "§7This §x§6§F§0§0§C§DE§x§7§6§0§B§D§0n§x§7§C§1§6§D§3d§x§8§3§2§1§D§6e§x§8§A§2§C§D§9r§x§9§1§3§7§D§DS§x§9§7§4§2§E§0c§x§9§E§4§D§E§3y§x§A§5§5§8§E§6t§x§A§B§6§3§E§9h§x§B§2§6§E§E§Ce §fis at §dlevel max§7."
+  upgrade-success: "&#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe &7upgraded to level &#B26EEC{level}."
+  not-allowed-world: "&7You cannot use the Ender Scythe in this world."
+  not-ender-scythe: "&7This is not an &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe&7."
+  receive-upgrade-item: "&7You have received an &#6F00CDS&#750AD0c&#7B14D3y&#811ED5t&#8728D8h&#8D32DBe &#9A46E1S&#A050E4h&#A65AE6a&#AC64E9r&#B26EECd&7!"
+  max-level-reached: "&7This &#6F00CDE&#760BD0n&#7C16D3d&#8321D6e&#8A2CD9r&#9137DDS&#9742E0c&#9E4DE3y&#A558E6t&#AB63E9h&#B26EECe &7is at &#DA70D6level max&7."
+  invalid-arguments: "&cInclude player name."
  ```
 
 ## 💻 Commands
