@@ -44,10 +44,10 @@ public class ScytheManager implements Listener {
     private String laserColor;
     private boolean particlesEnabled;
     private int maxScytheLevel;
-    private Map<Integer, ParticleSettings> particleSettingsMap;
+    private final Map<Integer, ParticleSettings> particleSettingsMap;
 
     public ScytheManager(JavaPlugin plugin, ConfigManager configManager) {
-        this.plugin = plugin;
+        ScytheManager.plugin = plugin;
         this.configManager = configManager;
         this.enderScytheKey = new NamespacedKey(plugin, "isEnderScythe");
         this.particleSettingsMap = new HashMap<>();
@@ -78,7 +78,7 @@ public class ScytheManager implements Listener {
             particleSettingsMap.clear();
             for (String key : section.getKeys(false)) {
                 int level = Integer.parseInt(key);
-                ParticleSettings settings = new ParticleSettings(section.getConfigurationSection(key));
+                ParticleSettings settings = new ParticleSettings(Objects.requireNonNull(section.getConfigurationSection(key)));
                 particleSettingsMap.put(level, settings);
             }
         }

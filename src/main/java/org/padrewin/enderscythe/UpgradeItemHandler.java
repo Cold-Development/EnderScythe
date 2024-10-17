@@ -142,13 +142,11 @@ public class UpgradeItemHandler implements Listener, CommandExecutor {
 
             meta.getPersistentDataContainer().set(upgradeKey, PersistentDataType.STRING, "upgrade");
 
-            // Adăugare enchantment random
             Random random = new Random();
             Enchantment[] enchantments = Enchantment.values();
             Enchantment randomEnchantment = enchantments[random.nextInt(enchantments.length)];
             meta.addEnchant(randomEnchantment, 1, true);
 
-            // Ascunderea enchantment-ului pentru a avea doar glint-ul pe item
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
             item.setItemMeta(meta);

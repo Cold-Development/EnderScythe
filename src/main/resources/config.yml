@@ -18,7 +18,7 @@ upgrade-item:
 # EnderScythe settings:
 damage-players: false # Set to true if you want players to use this Scythe in PvP
 enderscythe-damage: 20 # damage
-enderscythe-cooldown: 500 # miliseconds || this means 0.5 seconds
+enderscythe-cooldown: 500 # milliseconds || this means 0.5 seconds
 enderscythe-range: 32
 enderscythe-max-level: 2 # Max level for the EnderScythe (cannot be 0)
 

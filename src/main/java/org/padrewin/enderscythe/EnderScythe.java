@@ -1,29 +1,40 @@
 package org.padrewin.enderscythe;
 
+import dev.padrewin.colddev.ColdPlugin;
+import dev.padrewin.colddev.manager.Manager;
+import dev.padrewin.colddev.manager.PluginUpdateManager;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.HashMap;
+import java.util.*;
 
-public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
+public class EnderScythe extends ColdPlugin implements Listener, CommandExecutor, TabExecutor {
 
+    private static EnderScythe instance;
     private final Set<UUID> playersWithHoe = new HashSet<>();
     private final Map<UUID, Long> cooldowns = new HashMap<>();
     private ConfigManager configManager;
     private MessageManager messageManager;
     private ScytheManager scytheManager;
 
+    public EnderScythe() {
+        super("Cold-Development", "EnderScythe", 23657, null, null, null);
+        instance = this;
+    }
+
+    public static EnderScythe getInstance() {
+        return instance;
+    }
+
     @Override
-    public void onEnable() {
+    public void enable() {
+        instance = this;
         saveDefaultConfig();
+        getManager(PluginUpdateManager.class);
 
         configManager = new ConfigManager(this);
         messageManager = new MessageManager(configManager);
@@ -40,7 +51,7 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
 
         startParticleTask();
         getServer().getPluginManager().registerEvents(new EventHandlerSmithing(this), this);
-        getServer().getPluginManager().registerEvents(new EntityKillListener(scytheManager, this),this); // Înregistrează noul listener
+        getServer().getPluginManager().registerEvents(new EntityKillListener(scytheManager, this),this);
 
         String name = getDescription().getName();
         getLogger().info("");
@@ -51,12 +62,12 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
         getLogger().info(" \\____\\___/|_____|____/");
         getLogger().info("    " + name + " v" + getDescription().getVersion());
         getLogger().info("    Author(s): " + (String)getDescription().getAuthors().get(0));
-        getLogger().info("    (c) Cold Development. All rights reserved.");
+        getLogger().info("    (c) Cold Development ❄");
         getLogger().info("");
     }
 
     @Override
-    public void onDisable() {
+    public void disable() {
         getLogger().info("EnderScythe disabled.");
         getLogger().info("See you soon :)");
     }
@@ -68,6 +79,11 @@ public class EnderScythe extends JavaPlugin implements Listener, CommandExecutor
                 scytheManager.spawnParticles();
             }
         }.runTaskTimer(this, 0L, 10L);
+    }
+
+    @Override
+    protected @NotNull List<Class<? extends Manager>> getManagerLoadPriority() {
+        return List.of();
     }
 
     public Set<UUID> getPlayersWithHoe() {
